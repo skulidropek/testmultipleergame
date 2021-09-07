@@ -30,7 +30,7 @@ public class MapController : MonoBehaviour, IOnEventCallback
             for(int y = 0; y < _cells.GetLength(1); y++)
             {
                 _tilemap.SetTile(new Vector3Int(x, y, 0), _cellTile);
-                Debug.Log(new Vector3Int(x, y, 0) + " Player pos - " + _players[0].GamePosition);
+                Debug.Log(new Vector3Int(x, y, 0));
                 _cells[x, y] = true;
                // _cells[x, y] = Instantiate(_cellPrefab, new Vector3(x, y), Quaternion.identity, transform);
             }
@@ -153,7 +153,7 @@ public class MapController : MonoBehaviour, IOnEventCallback
 
     private void PerformTick(Vector2Int[] directions)
     {
-        if (_players.Count != directions.Length) return;
+        //if (_players.Count != directions.Length) return;
 
         PlayerControls[] sortedPlayers = _players
             .Where(p => !p.IsDead)
@@ -167,11 +167,15 @@ public class MapController : MonoBehaviour, IOnEventCallback
             player.Direction = directions[i++];
 
             MinePlayerBlock(player);
-
         }
 
         foreach (var player in sortedPlayers)
+        {
+            //Debug.Log(player.NickName);
+
             MovePlayer(player);
+        }
+
         foreach (var player in _players.Where(p => p.IsDead))
         {
             Vector2Int pos = player.GamePosition;
@@ -204,7 +208,7 @@ public class MapController : MonoBehaviour, IOnEventCallback
             player.Score++;
         }
 
-        // Проверяем не убило ли нас этим компанием
+        // Проверяем не убило ли нас компанием
 
         Vector2Int pos = targetPosition;
         PlayerControls minePlayer = _players.First(p => p.PhotonView.IsMine);
@@ -214,6 +218,8 @@ public class MapController : MonoBehaviour, IOnEventCallback
             {
                 if (pos == minePlayer.GamePosition)
                 {
+                    player.Score += minePlayer.Score;
+                    minePlayer.Score = 0;
                     PhotonNetwork.LeaveRoom();
                     break;
                 }

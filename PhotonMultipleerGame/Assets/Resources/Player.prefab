@@ -125,6 +125,13 @@ MonoBehaviour:
   _deadPlayerSprite: {fileID: 21300000, guid: 436c5e63723127948af8857e903f658a, type: 3}
   _ladder: {fileID: 1722774273975078982}
   _nickNameText: {fileID: 2097644643767984779}
+  _photonView: {fileID: 0}
+  _spriteRenderer: {fileID: 0}
+  _direction: {x: 0, y: 0}
+  _gamePosition: {x: 0, y: 0}
+  _isDead: 0
+  _nickName: 
+  _score: 0
 --- !u!1 &5293155300788473824
 GameObject:
   m_ObjectHideFlags: 0

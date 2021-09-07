@@ -12,16 +12,16 @@ public class PlayerControls : MonoBehaviour, IPunObservable
     [SerializeField] private Transform _ladder;
     [SerializeField] private TextMeshPro _nickNameText;
 
-    private PhotonView _photonView;
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private PhotonView _photonView;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
 
-    private Vector2Int _direction;
-    private Vector2Int _gamePosition;
+    [SerializeField] private Vector2Int _direction;
+    [SerializeField] private Vector2Int _gamePosition;
 
-    private bool _isDead;
-    private string _nickName;
-    private int _score;
+    [SerializeField] private bool _isDead;
+    [SerializeField] private string _nickName;
+    [SerializeField] private int _score;
 
     public Vector2Int Direction { get => _direction; set => _direction = value; }
     public Vector2Int GamePosition { get => _gamePosition; set => _gamePosition = value; }
@@ -35,7 +35,7 @@ public class PlayerControls : MonoBehaviour, IPunObservable
         _photonView = GetComponent<PhotonView>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        GamePosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        _gamePosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         FindObjectOfType<MapController>().AddPlayer(this);
 
         _nickName = _photonView.Owner.NickName;
@@ -62,7 +62,7 @@ public class PlayerControls : MonoBehaviour, IPunObservable
         if (Direction == Vector2.left) _spriteRenderer.flipX = true;
         if (Direction == Vector2.right) _spriteRenderer.flipX = false;
 
-        transform.position = Vector3.Lerp(transform.position, (Vector2)GamePosition, Time.deltaTime * 3);
+        transform.position = Vector3.Lerp(transform.position, _gamePosition + new Vector2(0.5f, 0.5f), Time.deltaTime * 3);
     }
 
     public void SetLadderLength(int length)
